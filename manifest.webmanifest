@@ -2,7 +2,7 @@
   "id": "./",
   "name": "RoadBeat · 私人车载音乐",
   "short_name": "RoadBeat",
-  "description": "本地导入 MP3 或 MP4 音轨，按歌曲列表离线连接车载蓝牙播放。",
+  "description": "本地导入常见音频或 MP4 音轨，按独立歌曲列表离线连接车载蓝牙播放。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
