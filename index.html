@@ -30,14 +30,40 @@
         } catch {
           document.documentElement.dataset.theme = "dark";
         }
+
+        const standalone =
+          window.matchMedia("(display-mode: standalone)").matches ||
+          Boolean(navigator.standalone);
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        const portraitScreenWidth = Math.round(
+          Math.min(window.screen.width, window.screen.height),
+        );
+        const iPhoneAirHeight =
+          standalone &&
+          portraitScreenWidth === 420 &&
+          window.matchMedia("(orientation: portrait)").matches
+            ? 912
+            : 0;
+        const appHeight = standalone
+          ? Math.max(
+              viewportHeight,
+              window.innerHeight,
+              window.screen.height,
+              iPhoneAirHeight,
+            )
+          : Math.max(viewportHeight, window.innerHeight);
+        document.documentElement.style.setProperty(
+          "--roadbeat-app-height",
+          `${Math.round(appHeight)}px`,
+        );
       })();
     </script>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icon-192.png" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <title>RoadBeat · 私人车载音乐</title>
-    <script type="module" crossorigin src="./assets/index-iTac6B5F.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DjIPaIx6.css">
+    <script type="module" crossorigin src="./assets/index-B-rXJm5e.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D7keJeni.css">
   </head>
   <body>
     <div id="root"></div>
