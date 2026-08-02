@@ -24,9 +24,6 @@
           document
             .querySelector('meta[name="theme-color"]')
             ?.setAttribute("content", theme === "light" ? "#f7f4ee" : "#090a0d");
-          document
-            .querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
-            ?.setAttribute("content", theme === "light" ? "default" : "black-translucent");
         } catch {
           document.documentElement.dataset.theme = "dark";
         }
@@ -35,23 +32,20 @@
           window.matchMedia("(display-mode: standalone)").matches ||
           Boolean(navigator.standalone);
         const viewportHeight = window.visualViewport?.height || window.innerHeight;
-        const portraitScreenWidth = Math.round(
-          Math.min(window.screen.width, window.screen.height),
-        );
+        const portraitViewportWidth = Math.round(window.innerWidth);
         const iPhoneAirHeight =
-          standalone &&
-          portraitScreenWidth === 420 &&
-          window.matchMedia("(orientation: portrait)").matches
-            ? 912
+          /iPhone/i.test(navigator.userAgent) &&
+          window.matchMedia("(orientation: portrait)").matches &&
+          portraitViewportWidth >= 410 &&
+          portraitViewportWidth <= 430
+            ? Math.round(portraitViewportWidth * (912 / 420))
             : 0;
-        const appHeight = standalone
-          ? Math.max(
-              viewportHeight,
-              window.innerHeight,
-              window.screen.height,
-              iPhoneAirHeight,
-            )
-          : Math.max(viewportHeight, window.innerHeight);
+        const appHeight = Math.max(
+          viewportHeight,
+          window.innerHeight,
+          standalone ? window.screen.height : 0,
+          iPhoneAirHeight,
+        );
         document.documentElement.style.setProperty(
           "--roadbeat-app-height",
           `${Math.round(appHeight)}px`,
@@ -62,8 +56,8 @@
     <link rel="icon" href="./icon-192.png" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <title>RoadBeat · 私人车载音乐</title>
-    <script type="module" crossorigin src="./assets/index-B-rXJm5e.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-D7keJeni.css">
+    <script type="module" crossorigin src="./assets/index-3nAwPZl0.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DQP1lRcx.css">
   </head>
   <body>
     <div id="root"></div>

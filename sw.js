@@ -1,4 +1,4 @@
-const CACHE_NAME = "roadbeat-shell-v7";
+const CACHE_NAME = "roadbeat-shell-v8";
 const APP_ROOT = new URL("./", self.registration.scope).href;
 const SHELL_ASSETS = [
   APP_ROOT,
