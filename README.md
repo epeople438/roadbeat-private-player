@@ -390,7 +390,8 @@ flowchart TD
 | `github-pages/index.html` | 静态 HTML、PWA meta、启动主题脚本 |
 | `github-pages/main.tsx` | React 静态入口 |
 | `vite.pages.config.ts` | GitHub Pages 构建配置，使用相对路径 |
-| `.github/workflows/deploy-pages.yml` | 推送 `main` 后自动构建和部署 Pages |
+| `build/deploy-pages.sh` | `npm run deploy`：构建并推送到 `gh-pages` |
+| `build/github-workflows/deploy-pages.yml` | 待启用的自动部署工作流（见同目录 README） |
 
 ### 12.3 Sites / Cloudflare 兼容构建
 
@@ -416,7 +417,7 @@ flowchart TD
 | `public/og.png` | 链接分享预览图 |
 | `public/.nojekyll` | 防止 GitHub Pages 使用 Jekyll 处理静态资源 |
 
-> 注意：`.git`、`.gitignore`、`.github/` 和 `.openai/` 都是以点开头的隐藏目录，用 Finder 搬动项目文件夹时很容易漏掉。`.gitignore` 与 `.github/workflows/deploy-pages.yml` 已按本文档重建；`.openai/hosting.json` 里的 Sites 项目 ID 无法凭空恢复，构建已改为在缺失时跳过 D1 / R2 绑定。
+> 注意：`.git`、`.gitignore`、`.github/` 和 `.openai/` 都是以点开头的隐藏目录，用 Finder 搬动项目文件夹时很容易漏掉。`.gitignore` 已重建，仓库也已重新连回 GitHub；部署工作流暂存在 `build/github-workflows/`。`.openai/hosting.json` 里的 Sites 项目 ID 无法凭空恢复，构建已改为在缺失时跳过 D1 / R2 绑定。
 
 ### 12.5 工程配置
 
@@ -468,6 +469,12 @@ GitHub Pages 构建：
 npm run build:pages
 ```
 
+构建并发布到线上：
+
+```bash
+npm run deploy
+```
+
 生成目录：
 
 - `dist/`：Sites/Vinext 构建产物。
@@ -485,15 +492,28 @@ npm run build:pages
 
 <https://epeople438.github.io/roadbeat-private-player/>
 
-推荐发布流程：
+仓库有两个分支，职责不同：
 
-1. 确认 `npm run build:pages` 成功。
-2. 把源代码推送到 GitHub 仓库的 `main` 分支。
-3. GitHub Actions 读取 `.github/workflows/deploy-pages.yml`。
-4. 工作流执行 `npm ci` 和 `npm run build:pages`。
-5. `dist-pages/` 被发布到 GitHub Pages。
+| 分支 | 内容 |
+| --- | --- |
+| `main` | 源代码，唯一的事实来源 |
+| `gh-pages` | `dist-pages/` 的构建产物，GitHub Pages 直接从这里的根目录提供服务 |
+
+Pages 当前是 **legacy 模式**（source: `gh-pages` 分支 `/`），不是 GitHub Actions 模式。发布：
+
+```bash
+npm run deploy
+```
+
+该命令（`build/deploy-pages.sh`）会构建、把产物覆盖进一个 `gh-pages` 的临时 worktree、提交并推送。源代码本身的改动照常 `git push origin main`，那一步不会触发部署。
 
 当前构建使用 `base: "./"`，确保它既能在仓库子路径运行，也能正确加载图标、Service Worker 和静态资源。
+
+#### 尚未接通：Actions 自动部署
+
+工作流文件已经写好，但暂存在 `build/github-workflows/deploy-pages.yml` 而不是 `.github/workflows/`：通过 OAuth 授权的 `gh` token 需要额外的 `workflow` 权限，才被允许写入后者。启用步骤见 `build/github-workflows/README.md`，一共四步（补权限、复制文件并推送、改 Pages Source、改默认分支）。
+
+在此之前，`npm run deploy` 是唯一的发布方式。
 
 ### 14.2 Sites
 
