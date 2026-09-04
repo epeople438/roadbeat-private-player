@@ -1,0 +1,31 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+dist-pages/
+.vinext/
+.wrangler/
+.next/
+*.tsbuildinfo
+
+# 本地环境与工作文件
+.env
+.env.*
+work/
+
+# 系统文件
+.DS_Store
+
+# 本机工具设置（launch.json 是项目配置，保留）
+.claude/settings.local.json
+
+# 私人媒体文件绝不进仓库
+*.mp3
+*.m4a
+*.aac
+*.wav
+*.aif
+*.aiff
+*.caf
+*.mp4

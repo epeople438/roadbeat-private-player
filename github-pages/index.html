@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0c10" />
+    <meta
+      name="description"
+      content="RoadBeat：本地导入常见音频或 MP4 音轨，按独立歌曲列表离线连接车载蓝牙播放。"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RoadBeat" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta property="og:title" content="RoadBeat · 私人车载音乐" />
+    <meta property="og:description" content="本地导入、独立歌曲列表、批量分组与车载蓝牙控制。" />
+    <meta property="og:type" content="website" />
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("roadbeat:theme");
+          const theme = savedTheme === "light" ? "light" : "dark";
+          document.documentElement.dataset.theme = theme;
+          document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute("content", theme === "light" ? "#faf7f1" : "#0b0c10");
+          document
+            .querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
+            ?.setAttribute(
+              "content",
+              theme === "light" ? "default" : "black-translucent",
+            );
+        } catch {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon-192.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <title>RoadBeat · 私人车载音乐</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

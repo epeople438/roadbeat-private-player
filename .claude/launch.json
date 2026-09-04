@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "roadbeat-pages",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--config", "vite.pages.config.ts", "--port", "5174", "--strictPort"],
+      "port": 5174
+    }
+  ]
+}
