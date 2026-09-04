@@ -2,7 +2,7 @@
 // emitted assets (build/sw-version-plugin.ts), so the cache name changes
 // exactly when the client bundle does. An un-built copy keeps the literal
 // text, which is still a valid, stable cache name for local preview.
-const CACHE_NAME = "roadbeat-shell-e47e752a4e";
+const CACHE_NAME = "roadbeat-shell-ce678b8b3d";
 const APP_ROOT = new URL("./", self.registration.scope).href;
 const SHELL_ASSETS = [
   APP_ROOT,
