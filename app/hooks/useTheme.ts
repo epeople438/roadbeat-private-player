@@ -46,6 +46,8 @@ export function useTheme() {
     document
       .querySelector('meta[name="theme-color"]')
       ?.setAttribute("content", themeMode === "light" ? "#faf7f1" : "#0b0c10");
+    // Kept in sync for completeness, but iOS only reads this at launch — the
+    // value that matters is the one the boot script writes before first paint.
     document
       .querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
       ?.setAttribute(

@@ -23,6 +23,16 @@ export function useAppShell() {
       setIsOnline(navigator.onLine);
     });
 
+    /** Measures an `env(safe-area-inset-*)` value, which CSS cannot expose directly. */
+    const readInset = (side: "top" | "bottom") => {
+      const probe = document.createElement("div");
+      probe.style.cssText = `position:fixed;left:0;top:0;visibility:hidden;pointer-events:none;width:10px;height:env(safe-area-inset-${side},0px)`;
+      document.body.append(probe);
+      const size = probe.getBoundingClientRect().height;
+      probe.remove();
+      return size;
+    };
+
     // Desktop keeps a phone-shaped frame sized to the real viewport; mobile
     // pins itself to the visual viewport in CSS instead.
     const syncAppHeight = () => {
@@ -31,6 +41,23 @@ export function useAppShell() {
       document.documentElement.style.setProperty(
         "--roadbeat-app-height",
         `${Math.round(measuredHeight)}px`,
+      );
+
+      // On this iPhone the home-screen web app is given a viewport shorter than
+      // the screen, anchored at the top — so the strip holding the home
+      // indicator falls outside the page entirely. Reserving
+      // safe-area-inset-bottom inside the layout then pushes the tab bar up by
+      // 34pt to avoid something that was never in the way. Measure the leftover
+      // screen below the viewport and only reserve what is not already covered.
+      const belowViewport = Math.max(
+        0,
+        Math.round(screen.height - window.innerHeight - (window.screenY || 0)),
+      );
+      const bottomInset = readInset("bottom");
+      const stillNeeded = Math.max(0, bottomInset - belowViewport);
+      document.documentElement.style.setProperty(
+        "--roadbeat-safe-bottom",
+        `${stillNeeded}px`,
       );
     };
     syncAppHeight();
@@ -65,6 +92,7 @@ export function useAppShell() {
       window.visualViewport?.removeEventListener("resize", syncAppHeight);
       window.removeEventListener("load", registerServiceWorker);
       document.documentElement.style.removeProperty("--roadbeat-app-height");
+      document.documentElement.style.removeProperty("--roadbeat-safe-bottom");
     };
   }, []);
 

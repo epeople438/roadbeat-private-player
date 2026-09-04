@@ -24,6 +24,8 @@
           document
             .querySelector('meta[name="theme-color"]')
             ?.setAttribute("content", theme === "light" ? "#faf7f1" : "#0b0c10");
+          // iOS reads this once, at launch, so runtime theme changes do not
+          // move it until the next launch.
           document
             .querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
             ?.setAttribute(

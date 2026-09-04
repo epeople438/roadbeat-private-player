@@ -3003,10 +3003,14 @@ button:disabled {
 
 @media (max-width: 599px) {
   :root {
-    /* iOS reserves the home-indicator strip itself; do not add extra padding on
-       top of it, or the tab bar visibly floats above the bottom of the screen. */
+    /* `--roadbeat-safe-bottom` is measured at runtime (hooks/useAppShell.ts): it
+       is the part of the home-indicator inset that actually falls inside the
+       page. Where iOS hands the web app a viewport that stops above that strip,
+       it resolves to 0 and the tab bar sits flush with the last row of pixels
+       the page owns. The env() fallback covers a first paint before the
+       measurement lands. */
     --nav-height: 58px;
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-bottom: var(--roadbeat-safe-bottom, env(safe-area-inset-bottom, 0px));
   }
 
   html,
