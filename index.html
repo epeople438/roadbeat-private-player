@@ -24,12 +24,21 @@
           document
             .querySelector('meta[name="theme-color"]')
             ?.setAttribute("content", theme === "light" ? "#faf7f1" : "#0b0c10");
+          // iOS reads this once, at launch. Only "black-translucent" gives the
+          // web app the whole screen; anything else leaves a system-owned strip
+          // the page cannot reach. The override exists to A/B that on device.
+          const override = localStorage.getItem("roadbeat:statusbar");
+          const style =
+            override === "default"
+              ? "default"
+              : override === "translucent"
+                ? "black-translucent"
+                : theme === "light"
+                  ? "default"
+                  : "black-translucent";
           document
             .querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
-            ?.setAttribute(
-              "content",
-              theme === "light" ? "default" : "black-translucent",
-            );
+            ?.setAttribute("content", style);
         } catch {
           document.documentElement.dataset.theme = "dark";
         }
@@ -39,8 +48,8 @@
     <link rel="icon" href="./icon-192.png" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <title>RoadBeat · 私人车载音乐</title>
-    <script type="module" crossorigin src="./assets/index-D_J2U7XG.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-U9pB_wvr.css">
+    <script type="module" crossorigin src="./assets/index-CeGKqxnX.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BqFEA519.css">
   </head>
   <body>
     <div id="root"></div>
