@@ -1,4 +1,8 @@
-const CACHE_NAME = "roadbeat-shell-v10";
+// The suffix below is a placeholder stamped at build time with a hash of the
+// emitted assets (build/sw-version-plugin.ts), so the cache name changes
+// exactly when the client bundle does. An un-built copy keeps the literal
+// text, which is still a valid, stable cache name for local preview.
+const CACHE_NAME = "roadbeat-shell-460e81e213";
 const APP_ROOT = new URL("./", self.registration.scope).href;
 const SHELL_ASSETS = [
   APP_ROOT,
